@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediCare Wellness Clinic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F8FF;
+  --white:#FFFFFF;
+  --primary:#0A4B6E;
+  --primary2:#1565C0;
+  --accent:#00C9B1;
+  --accent2:#4FC3F7;
+  --warm:#E3F2FD;
+  --muted:#546E7A;
+  --surface:#EEF7FE;
+  --red:#FF5252;
+  --text:#1A2B3C;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+::selection{background:var(--accent);color:var(--white)}
+
+/* ── INTRO ── */
+#intro{position:fixed;inset:0;z-index:9999;background:var(--primary);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .9s ease .1s,visibility .9s ease .1s}
+#intro.gone{opacity:0;visibility:hidden;pointer-events:none}
+.intro-cross{animation:crossPulse 1s ease infinite}
+@keyframes crossPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.intro-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,8vw,6rem);color:#fff;letter-spacing:3px;opacity:0;animation:fadeUp .8s .6s forwards}
+.intro-sub{font-size:.72rem;letter-spacing:6px;text-transform:uppercase;color:var(--accent);opacity:0;animation:fadeUp .6s 1s forwards;margin-top:10px}
+.intro-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));animation:barFill 2.4s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes barFill{to{width:100%}}
+
+/* ── CURSOR ── */
+.cur{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:8888;transform:translate(-50%,-50%)}
+.cur2{position:fixed;width:32px;height:32px;border:1.5px solid rgba(0,201,177,.4);border-radius:50%;pointer-events:none;z-index:8887;transform:translate(-50%,-50%);transition:all .12s ease-out}
+
+/* ── SCROLL PROGRESS ── */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));z-index:600}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:500;padding:16px 6%;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);box-shadow:0 1px 20px rgba(10,75,110,.08);transform:translateY(-100%);animation:navIn .6s 2.6s forwards}
+@keyframes navIn{to{transform:translateY(0)}}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem}
+.logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--primary);font-weight:600}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.5px;transition:color .3s}
+.nav-links a:hover{color:var(--primary)}
+.nav-cta{background:var(--primary);color:#fff;padding:10px 22px;border-radius:24px;font-size:.8rem;font-weight:500;text-decoration:none;transition:all .3s;box-shadow:0 4px 14px rgba(10,75,110,.3)}
+.nav-cta:hover{background:var(--primary2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,75,110,.4)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding:120px 6% 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;background:linear-gradient(135deg,#E3F2FD 0%,#F0F8FF 40%,#E8F5E9 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,201,177,.08) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(10,75,110,.06) 0%,transparent 70%);pointer-events:none}
+.hero-content{position:relative;z-index:2;opacity:0;transform:translateX(-30px);animation:heroIn .9s 2.8s forwards}
+@keyframes heroIn{to{opacity:1;transform:translateX(0)}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,201,177,.12);border:1px solid rgba(0,201,177,.3);border-radius:20px;padding:6px 14px;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:22px;font-weight:500}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.2rem);font-weight:600;line-height:1.1;color:var(--primary);margin-bottom:18px}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-desc{font-size:.97rem;color:var(--muted);line-height:1.85;margin-bottom:30px;max-width:420px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{background:var(--primary);color:#fff;padding:14px 30px;border-radius:28px;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .3s;box-shadow:0 6px 20px rgba(10,75,110,.3)}
+.btn-primary:hover{background:var(--primary2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(10,75,110,.4)}
+.btn-ghost{border:1.5px solid var(--primary);color:var(--primary);padding:14px 30px;border-radius:28px;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .3s}
+.btn-ghost:hover{background:var(--primary);color:#fff}
+.hero-stats{display:flex;gap:32px;margin-top:36px;padding-top:32px;border-top:1px solid rgba(10,75,110,.1)}
+.h-stat strong{font-family:'Playfair Display',serif;font-size:2rem;color:var(--primary);display:block}
+.h-stat span{font-size:.72rem;color:var(--muted);letter-spacing:1px}
+
+/* 3D DOCTOR SVG SCENE */
+.hero-visual{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateX(30px);animation:heroIn .9s 3s forwards}
+.doctor-scene{width:100%;max-width:420px;perspective:800px;transform-style:preserve-3d}
+.doctor-scene svg{width:100%;filter:drop-shadow(0 30px 60px rgba(10,75,110,.2));animation:docFloat 4s ease-in-out infinite}
+@keyframes docFloat{0%,100%{transform:translateY(0) rotateY(-3deg)}50%{transform:translateY(-18px) rotateY(3deg)}}
+.floating-pills{position:absolute;top:10%;right:5%}
+.pill{position:absolute;border-radius:20px;animation:pillFloat 3s ease-in-out infinite}
+.pill1{width:40px;height:16px;background:linear-gradient(135deg,#FF8A80,#FF5252);top:0;right:0;animation-delay:0s}
+.pill2{width:32px;height:13px;background:linear-gradient(135deg,#80DEEA,var(--accent));top:30px;right:20px;animation-delay:.8s}
+.pill3{width:28px;height:12px;background:linear-gradient(135deg,#FFD54F,#FF8F00);top:55px;right:5px;animation-delay:1.5s}
+@keyframes pillFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-8px) rotate(5deg)}}
+.heartbeat{position:absolute;bottom:15%;left:5%;background:#fff;border-radius:12px;padding:12px 16px;box-shadow:0 8px 30px rgba(0,0,0,.1);display:flex;align-items:center;gap:10px;animation:hbPulse 2s ease-in-out infinite}
+@keyframes hbPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.hb-dot{width:10px;height:10px;background:var(--red);border-radius:50%;animation:dotBeat .8s ease-in-out infinite}
+@keyframes dotBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
+.hb-text{font-size:.72rem;color:var(--muted)}
+.hb-num{font-size:1.1rem;font-weight:700;color:var(--red)}
+
+/* ── DOCTOR GUIDE ── */
+#doctorGuide{position:fixed;bottom:20px;right:24px;z-index:700;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.doc-bubble{background:rgba(255,255,255,.97);border:1.5px solid rgba(0,201,177,.4);border-radius:14px 14px 4px 14px;padding:14px 18px;max-width:250px;font-size:.78rem;line-height:1.65;color:var(--text);backdrop-filter:blur(12px);opacity:0;transform:translateY(14px) scale(.95);transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:0 10px 40px rgba(10,75,110,.12)}
+.doc-bubble.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.doc-bubble b{color:var(--primary)}
+.doc-char{width:75px;height:75px;cursor:pointer;filter:drop-shadow(0 8px 20px rgba(10,75,110,.25));position:relative}
+.doc-char svg{width:100%;height:100%;animation:docCharFloat 3s ease-in-out infinite}
+@keyframes docCharFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.doc-badge{position:absolute;top:-8px;right:-8px;width:22px;height:22px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;font-weight:700;border:2px solid #fff;animation:badgePing 2s ease-in-out infinite}
+@keyframes badgePing{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* ── SERVICES ── */
+.services{padding:90px 6%;background:var(--white)}
+.sec-header{text-align:center;margin-bottom:56px}
+.sec-tag{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:12px}
+.sec-header h2{font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--primary);font-weight:600}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.service-card{background:var(--surface);border-radius:16px;padding:32px 28px;border:1px solid rgba(10,75,110,.07);transition:all .4s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;cursor:pointer}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--primary),var(--primary2));opacity:0;transition:opacity .4s}
+.service-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(10,75,110,.15)}
+.service-card:hover::before{opacity:1}
+.service-card:hover *{color:#fff!important;border-color:rgba(255,255,255,.2)!important}
+.svc-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px;position:relative;z-index:1;transition:transform .4s}
+.service-card:hover .svc-icon{transform:rotate(-8deg) scale(1.1)}
+.svc-icon svg,.svc-icon span{position:relative;z-index:1}
+.service-card h3{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--primary);margin-bottom:10px;position:relative;z-index:1}
+.service-card p{font-size:.85rem;color:var(--muted);line-height:1.75;position:relative;z-index:1}
+.svc-arr{position:absolute;bottom:20px;right:20px;width:28px;height:28px;border-radius:50%;border:1px solid rgba(10,75,110,.2);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--primary);transition:all .3s;z-index:1}
+.service-card:hover .svc-arr{background:#fff;color:var(--primary);border-color:#fff}
+
+/* ── DOCTORS ── */
+.doctors{padding:90px 6%;background:var(--surface)}
+.doctors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.doc-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(10,75,110,.07);transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.doc-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(10,75,110,.15)}
+.doc-avatar{height:200px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden}
+.doc-avatar-1{background:linear-gradient(135deg,#E3F2FD,#BBDEFB)}
+.doc-avatar-2{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
+.doc-avatar-3{background:linear-gradient(135deg,#FFF3E0,#FFE0B2)}
+.doc-avatar svg{animation:docAvatarFloat 4s ease-in-out infinite}
+@keyframes docAvatarFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.doc-info{padding:22px}
+.doc-info h4{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--primary);margin-bottom:4px}
+.doc-specialty{font-size:.75rem;color:var(--accent);font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.doc-exp{font-size:.8rem;color:var(--muted)}
+.doc-btn{display:block;margin:14px 22px 22px;background:var(--surface);border:1.5px solid var(--primary);color:var(--primary);padding:10px;border-radius:24px;text-align:center;text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s}
+.doc-btn:hover{background:var(--primary);color:#fff}
+
+/* ── CONTACT ── */
+.contact{padding:90px 6%;background:linear-gradient(135deg,var(--primary) 0%,var(--primary2) 100%);text-align:center;position:relative;overflow:hidden}
+.contact::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
+.contact h2{font-family:'Playfair Display',serif;font-size:3rem;color:#fff;margin-bottom:14px}
+.contact p{color:rgba(255,255,255,.7);font-size:.97rem;margin-bottom:42px}
+.contact-cards{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.c-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:24px 28px;text-align:center;backdrop-filter:blur(10px);transition:all .3s}
+.c-card:hover{background:rgba(255,255,255,.14);transform:translateY(-4px)}
+.c-card-icon{font-size:1.8rem;margin-bottom:10px}
+.c-card a{color:#fff;text-decoration:none;font-family:'Playfair Display',serif;font-size:1.05rem;display:block;margin-bottom:4px}
+.c-card span{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+/* ── FOOTER ── */
+footer{background:var(--primary);padding:24px 6%;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.08)}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:1.5px}
+.footer-brand{font-family:'Playfair Display',serif;font-size:.95rem;letter-spacing:2px;color:var(--accent)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(35px);transition:opacity .75s ease,transform .75s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* COUNTER */
+.counter{display:inline}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:100px}
+  .hero-visual{display:none}
+  .services-grid,.doctors-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .services-grid,.doctors-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur2" id="cur2"></div>
+<div id="progress"></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div style="font-size:4rem;margin-bottom:20px;animation:crossPulse 1s infinite">🏥</div>
+  <div class="intro-title">MediCare</div>
+  <div class="intro-sub">Your Trusted Wellness Partner</div>
+  <div class="intro-bar"></div>
+</div>
+
+<!-- DOCTOR GUIDE -->
+<div id="doctorGuide">
+  <div class="doc-bubble" id="docBubble">
+    <b>👨‍⚕️ Dr. Guide here!</b><br>
+    Welcome to MediCare Clinic!<br>I'll help you navigate our services.
+  </div>
+  <div class="doc-char" id="docChar">
+    <div class="doc-badge">!</div>
+    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <!-- White coat body -->
+      <rect x="18" y="44" width="44" height="30" rx="8" fill="#fff" stroke="#E0E0E0" stroke-width="1"/>
+      <!-- Blue shirt underneath -->
+      <rect x="26" y="52" width="28" height="22" rx="4" fill="#1565C0" opacity=".8"/>
+      <!-- Stethoscope -->
+      <path d="M30 52 Q28 60 32 66 Q36 70 40 68 Q44 70 48 66 Q52 60 50 52" stroke="#0A4B6E" stroke-width="2" fill="none"/>
+      <circle cx="40" cy="68" r="3" fill="#0A4B6E"/>
+      <!-- Head -->
+      <circle cx="40" cy="28" r="16" fill="#FFCC80"/>
+      <!-- Hair -->
+      <path d="M24 24 Q26 12 40 10 Q54 12 56 24 Q54 18 40 16 Q26 18 24 24Z" fill="#4E342E"/>
+      <!-- Eyes -->
+      <circle cx="35" cy="27" r="2.5" fill="#fff"/><circle cx="35" cy="27" r="1.4" fill="#1A237E"/>
+      <circle cx="45" cy="27" r="2.5" fill="#fff"/><circle cx="45" cy="27" r="1.4" fill="#1A237E"/>
+      <!-- Glasses -->
+      <rect x="31" y="24" width="8" height="6" rx="3" fill="none" stroke="#0A4B6E" stroke-width="1.2"/>
+      <rect x="41" y="24" width="8" height="6" rx="3" fill="none" stroke="#0A4B6E" stroke-width="1.2"/>
+      <line x1="39" y1="27" x2="41" y2="27" stroke="#0A4B6E" stroke-width="1.2"/>
+      <!-- Smile -->
+      <path d="M36 34 Q40 38 44 34" stroke="#E64A19" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Clipboard -->
+      <rect x="44" y="46" width="16" height="20" rx="3" fill="#fff" stroke="#E0E0E0" stroke-width="1"/>
+      <rect x="46" y="42" width="12" height="6" rx="2" fill="#BDBDBD"/>
+      <line x1="47" y1="53" x2="57" y2="53" stroke="#B0BEC5" stroke-width="1.2"/>
+      <line x1="47" y1="57" x2="57" y2="57" stroke="#B0BEC5" stroke-width="1.2"/>
+      <line x1="47" y1="61" x2="53" y2="61" stroke="#B0BEC5" stroke-width="1.2"/>
+      <!-- Red cross badge -->
+      <circle cx="22" cy="46" r="7" fill="#FF5252"/>
+      <rect x="20.5" y="43" width="3" height="6" rx="1" fill="#fff"/>
+      <rect x="19" y="44.5" width="6" height="3" rx="1" fill="#fff"/>
+      <!-- Sparkles -->
+      <text x="5" y="18" font-size="7" fill="#00C9B1" opacity=".8">✦</text>
+      <text x="65" y="12" font-size="6" fill="#00C9B1" opacity=".6">✦</text>
+    </svg>
+  </div>
+</div>
+
+<nav>
+  <div class="logo-wrap">
+    <div class="logo-icon">🏥</div>
+    <div class="logo">MediCare</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#doctors">Doctors</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Appointment</a>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span>✦</span> Trusted by 10,000+ patients in Prayagraj</div>
+    <h1>Your <em>Health</em> Is Our<br>Top Priority</h1>
+    <p class="hero-desc">World-class medical care with compassion. From routine check-ups to specialized treatments — we're here for you every step of the way.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Book Appointment</a>
+      <a href="#services" class="btn-ghost">Our Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><strong class="counter" data-target="15">0</strong><span>+ Years of Excellence</span></div>
+      <div class="h-stat"><strong class="counter" data-target="50">0</strong><span>+ Expert Doctors</span></div>
+      <div class="h-stat"><strong class="counter" data-target="10000">0</strong><span>Patients Treated</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="doctor-scene">
+      <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circle -->
+        <circle cx="160" cy="220" r="150" fill="url(#heroGrad)" opacity=".15"/>
+        <defs>
+          <radialGradient id="heroGrad"><stop offset="0%" stop-color="#00C9B1"/><stop offset="100%" stop-color="#0A4B6E" stop-opacity="0"/></radialGradient>
+        </defs>
+        <!-- Lab coat -->
+        <rect x="70" y="200" width="180" height="180" rx="20" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="2"/>
+        <!-- Blue undershirt -->
+        <rect x="100" y="220" width="120" height="160" rx="10" fill="#1565C0" opacity=".85"/>
+        <!-- Lapels -->
+        <path d="M100 220 L130 260 L160 220Z" fill="#F5F5F5"/>
+        <path d="M220 220 L190 260 L160 220Z" fill="#F5F5F5"/>
+        <!-- Pocket -->
+        <rect x="80" y="240" width="36" height="28" rx="5" fill="#fff" stroke="#E0E0E0" stroke-width="1.5"/>
+        <line x1="90" y1="248" x2="106" y2="248" stroke="#90CAF9" stroke-width="1.5"/>
+        <line x1="90" y1="254" x2="106" y2="254" stroke="#90CAF9" stroke-width="1.5"/>
+        <!-- Name tag -->
+        <rect x="80" y="272" width="36" height="20" rx="4" fill="#0A4B6E"/>
+        <text x="98" y="286" font-size="6" fill="#fff" text-anchor="middle">Dr. Verma</text>
+        <!-- Red cross badge -->
+        <circle cx="220" cy="248" r="12" fill="#FF5252"/>
+        <rect x="218.5" y="242" width="3" height="12" rx="1.5" fill="#fff"/>
+        <rect x="215" y="245.5" width="10" height="3" rx="1.5" fill="#fff"/>
+        <!-- Head -->
+        <circle cx="160" cy="150" r="55" fill="#FFCC80"/>
+        <!-- Hair -->
+        <path d="M105 140 Q108 100 140 90 Q160 85 180 90 Q212 100 215 140 Q210 115 160 110 Q110 115 105 140Z" fill="#4E342E"/>
+        <!-- Ears -->
+        <ellipse cx="106" cy="155" rx="8" ry="10" fill="#FFB74D"/>
+        <ellipse cx="214" cy="155" rx="8" ry="10" fill="#FFB74D"/>
+        <!-- Eyes -->
+        <circle cx="143" cy="148" r="9" fill="#fff"/>
+        <circle cx="143" cy="148" r="5.5" fill="#1A237E"/>
+        <circle cx="145" cy="146" r="1.5" fill="#fff"/>
+        <circle cx="177" cy="148" r="9" fill="#fff"/>
+        <circle cx="177" cy="148" r="5.5" fill="#1A237E"/>
+        <circle cx="179" cy="146" r="1.5" fill="#fff"/>
+        <!-- Glasses -->
+        <rect x="133" y="142" width="18" height="12" rx="5" fill="none" stroke="#0A4B6E" stroke-width="2"/>
+        <rect x="168" y="142" width="18" height="12" rx="5" fill="none" stroke="#0A4B6E" stroke-width="2"/>
+        <line x1="151" y1="148" x2="168" y2="148" stroke="#0A4B6E" stroke-width="2"/>
+        <line x1="106" y1="148" x2="133" y2="148" stroke="#0A4B6E" stroke-width="1.5"/>
+        <line x1="186" y1="148" x2="214" y2="148" stroke="#0A4B6E" stroke-width="1.5"/>
+        <!-- Nose -->
+        <path d="M157 160 Q160 166 163 160" stroke="#E64A19" stroke-width="1.2" fill="none"/>
+        <!-- Smile -->
+        <path d="M148 170 Q160 180 172 170" stroke="#E64A19" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Stethoscope -->
+        <path d="M130 210 Q118 240 122 270 Q128 295 148 298 Q168 300 178 295 Q198 285 200 260 Q202 238 190 210" stroke="#0A4B6E" stroke-width="3.5" fill="none"/>
+        <circle cx="160" cy="298" r="8" fill="#0A4B6E"/>
+        <circle cx="160" cy="298" r="4" fill="#00C9B1"/>
+        <!-- Clipboard in hand -->
+        <rect x="210" y="280" width="56" height="72" rx="6" fill="#fff" stroke="#E0E0E0" stroke-width="2"/>
+        <rect x="224" y="272" width="28" height="14" rx="5" fill="#9E9E9E"/>
+        <line x1="218" y1="296" x2="258" y2="296" stroke="#B0BEC5" stroke-width="2"/>
+        <line x1="218" y1="305" x2="258" y2="305" stroke="#B0BEC5" stroke-width="2"/>
+        <line x1="218" y1="314" x2="248" y2="314" stroke="#B0BEC5" stroke-width="2"/>
+        <line x1="218" y1="323" x2="258" y2="323" stroke="#B0BEC5" stroke-width="2"/>
+        <!-- Heartbeat line on clipboard -->
+        <path d="M218 338 L228 338 L232 330 L236 346 L240 334 L244 338 L258 338" stroke="#FF5252" stroke-width="2" fill="none"/>
+        <!-- Sparkles around -->
+        <text x="40" y="80" font-size="18" fill="#00C9B1" opacity=".5">✦</text>
+        <text x="265" y="60" font-size="14" fill="#00C9B1" opacity=".4">✦</text>
+        <text x="20" y="280" font-size="12" fill="#4FC3F7" opacity=".5">✦</text>
+        <text x="280" y="320" font-size="10" fill="#4FC3F7" opacity=".4">✦</text>
+      </svg>
+    </div>
+    <div class="floating-pills">
+      <div class="pill pill1"></div>
+      <div class="pill pill2"></div>
+      <div class="pill pill3"></div>
+    </div>
+    <div class="heartbeat">
+      <div class="hb-dot"></div>
+      <div>
+        <div class="hb-text">Heart Rate</div>
+        <div class="hb-num">72 BPM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="sec-header reveal">
+    <div class="sec-tag">✦ What We Offer</div>
+    <h2>Our Medical Services</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="svc-icon">❤️</div>
+      <h3>Cardiology</h3>
+      <p>Advanced heart care with ECG, echocardiography, and holter monitoring by expert cardiologists.</p>
+      <div class="svc-arr">→</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="svc-icon">🧠</div>
+      <h3>Neurology</h3>
+      <p>Comprehensive brain and nervous system care including EEG, nerve conduction studies and more.</p>
+      <div class="svc-arr">→</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="svc-icon">🦷</div>
+      <h3>Dental Care</h3>
+      <p>Complete oral health services — cleanings, fillings, implants, orthodontics, and cosmetic dentistry.</p>
+      <div class="svc-arr">→</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="svc-icon">👁️</div>
+      <h3>Ophthalmology</h3>
+      <p>Full eye examinations, laser correction, cataract surgery, and glaucoma treatment.</p>
+      <div class="svc-arr">→</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="svc-icon">🩻</div>
+      <h3>Radiology</h3>
+      <p>State-of-the-art MRI, CT scan, X-ray, and ultrasound imaging with rapid report delivery.</p>
+      <div class="svc-arr">→</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="svc-icon">👶</div>
+      <h3>Pediatrics</h3>
+      <p>Gentle, compassionate care for infants, children, and adolescents by dedicated pediatricians.</p>
+      <div class="svc-arr">→</div>
+    </div>
+  </div>
+</section>
+
+<section class="doctors" id="doctors">
+  <div class="sec-header reveal">
+    <div class="sec-tag">✦ Meet The Team</div>
+    <h2>Our Expert Doctors</h2>
+  </div>
+  <div class="doctors-grid">
+    <div class="doc-card reveal">
+      <div class="doc-avatar doc-avatar-1">
+        <svg width="120" height="160" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="55" r="38" fill="#FFCC80"/>
+          <path d="M22 48 Q24 20 60 16 Q96 20 98 48 Q94 30 60 27 Q26 30 22 48Z" fill="#3E2723"/>
+          <circle cx="48" cy="53" r="6" fill="#fff"/><circle cx="48" cy="53" r="3.5" fill="#1A237E"/>
+          <circle cx="72" cy="53" r="6" fill="#fff"/><circle cx="72" cy="53" r="3.5" fill="#1A237E"/>
+          <path d="M50 68 Q60 76 70 68" stroke="#E64A19" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="20" y="100" width="80" height="55" rx="14" fill="#fff" stroke="#E0E0E0" stroke-width="1.5"/>
+          <rect x="36" y="116" width="48" height="39" rx="8" fill="#0A4B6E" opacity=".8"/>
+          <circle cx="28" cy="108" r="8" fill="#FF5252"/>
+          <rect x="26.5" y="104" width="3" height="8" rx="1.5" fill="#fff"/>
+          <rect x="24" y="106.5" width="8" height="3" rx="1.5" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="doc-info">
+        <h4>Dr. Priya Sharma</h4>
+        <div class="doc-specialty">Cardiologist</div>
+        <div class="doc-exp">15 years experience · MBBS, MD Cardiology</div>
+      </div>
+      <a href="#contact" class="doc-btn">Book Appointment</a>
+    </div>
+    <div class="doc-card reveal">
+      <div class="doc-avatar doc-avatar-2">
+        <svg width="120" height="160" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="55" r="38" fill="#FFAB76"/>
+          <path d="M22 50 Q28 18 60 14 Q92 18 98 50 Q90 28 60 25 Q30 28 22 50Z" fill="#5D4037"/>
+          <circle cx="48" cy="53" r="6" fill="#fff"/><circle cx="48" cy="53" r="3.5" fill="#1B5E20"/>
+          <circle cx="72" cy="53" r="6" fill="#fff"/><circle cx="72" cy="53" r="3.5" fill="#1B5E20"/>
+          <rect x="40" y="46" width="16" height="10" rx="4" fill="none" stroke="#0A4B6E" stroke-width="1.5"/>
+          <rect x="64" y="46" width="16" height="10" rx="4" fill="none" stroke="#0A4B6E" stroke-width="1.5"/>
+          <line x1="56" y1="51" x2="64" y2="51" stroke="#0A4B6E" stroke-width="1.5"/>
+          <path d="M50 68 Q60 76 70 68" stroke="#E64A19" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="20" y="100" width="80" height="55" rx="14" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1.5"/>
+          <rect x="36" y="116" width="48" height="39" rx="8" fill="#1B5E20" opacity=".8"/>
+        </svg>
+      </div>
+      <div class="doc-info">
+        <h4>Dr. Arun Mehta</h4>
+        <div class="doc-specialty">Neurologist</div>
+        <div class="doc-exp">12 years experience · MBBS, DM Neurology</div>
+      </div>
+      <a href="#contact" class="doc-btn">Book Appointment</a>
+    </div>
+    <div class="doc-card reveal">
+      <div class="doc-avatar doc-avatar-3">
+        <svg width="120" height="160" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="55" r="38" fill="#FFD180"/>
+          <path d="M22 46 Q26 14 60 12 Q94 14 98 46 Q92 22 60 19 Q28 22 22 46Z" fill="#212121"/>
+          <circle cx="48" cy="53" r="6" fill="#fff"/><circle cx="48" cy="53" r="3.5" fill="#6A1B9A"/>
+          <circle cx="72" cy="53" r="6" fill="#fff"/><circle cx="72" cy="53" r="3.5" fill="#6A1B9A"/>
+          <path d="M50 68 Q60 76 70 68" stroke="#E64A19" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect x="20" y="100" width="80" height="55" rx="14" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1.5"/>
+          <rect x="36" y="116" width="48" height="39" rx="8" fill="#6A1B9A" opacity=".8"/>
+        </svg>
+      </div>
+      <div class="doc-info">
+        <h4>Dr. Sneha Gupta</h4>
+        <div class="doc-specialty">Pediatrician</div>
+        <div class="doc-exp">10 years experience · MBBS, MD Pediatrics</div>
+      </div>
+      <a href="#contact" class="doc-btn">Book Appointment</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact reveal" id="contact">
+  <h2>Book Your Appointment</h2>
+  <p>Our team is ready to provide you with the best healthcare experience in Prayagraj.</p>
+  <div class="contact-cards">
+    <div class="c-card"><div class="c-card-icon">📞</div><a href="tel:+911234567890">+91 12345 67890</a><span>Call Us</span></div>
+    <div class="c-card"><div class="c-card-icon">📧</div><a href="mailto:care@medicare.in">care@medicare.in</a><span>Email</span></div>
+    <div class="c-card"><div class="c-card-icon">💬</div><a href="#">+91 98765 43210</a><span>WhatsApp</span></div>
+    <div class="c-card"><div class="c-card-icon">📍</div><a href="#">Civil Lines, Prayagraj</a><span>Our Location</span></div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2025 MEDICARE WELLNESS CLINIC · ALL RIGHTS RESERVED</span>
+  <span class="footer-brand">MediCare</span>
+</footer>
+
+<script>
+/* INTRO */
+setTimeout(()=>document.getElementById('intro').classList.add('gone'),2700);
+
+/* CURSOR */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function a(){cx+=(mx-cx)*.13;cy+=(my-cy)*.13;cur2.style.left=cx+'px';cur2.style.top=cy+'px';requestAnimationFrame(a)})();
+
+/* SCROLL PROGRESS */
+window.addEventListener('scroll',()=>{
+  document.getElementById('progress').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+});
+
+/* REVEAL */
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('visible');if(el.target.querySelectorAll('.counter').length)animCounters(el.target);}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* COUNTER */
+function animCounters(parent){
+  parent.querySelectorAll('.counter').forEach(el=>{
+    const t=+el.dataset.target;let s=0;
+    const iv=setInterval(()=>{s+=t/(1800/16);if(s>=t){s=t;clearInterval(iv);}
+      el.textContent=t>=1000?(s/1000).toFixed(0)+'K+':Math.floor(s)+'+';
+      if(t===15)el.textContent=Math.floor(s)+'+';
+      if(t===50)el.textContent=Math.floor(s)+'+';
+    },16);
+  });
+}
+/* also trigger on hero */
+const heroCounters=document.querySelectorAll('.hero .counter');
+const hObs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){
+  const t=+el.dataset.target;let s=0;
+  const iv=setInterval(()=>{s+=t/(1800/16);if(s>=t){s=t;clearInterval(iv);}
+    el.textContent=t>=1000?(s/1000).toFixed(0)+'K+':Math.floor(s)+'+';
+    if(t===15||t===50)el.textContent=Math.floor(s)+'+';
+  },16);
+  hObs.unobserve(el);
+}})},{threshold:.5});
+heroCounters.forEach(el=>hObs.observe(el));
+
+/* DOCTOR GUIDE */
+const docBubble=document.getElementById('docBubble'),docChar=document.getElementById('docChar');
+const msgs=[
+  '<b>👨‍⚕️ Dr. Guide here!</b><br>Welcome to MediCare! Click me to get navigation tips.',
+  '<b>📋 Services section:</b><br>We offer 6 specialties. Hover over cards to learn more!',
+  '<b>👩‍⚕️ Meet our doctors!</b><br>All certified specialists with years of experience.',
+  '<b>📞 Book easily!</b><br>Call, WhatsApp, or email us to schedule your visit.',
+  '<b>🏥 Did you know?</b><br>We\'re open 7 days a week, 8AM – 8PM in Prayagraj!'
+];
+let mi=0,bt;
+function showBubble(m){
+  docBubble.innerHTML=m;docBubble.classList.add('show');
+  clearTimeout(bt);bt=setTimeout(()=>docBubble.classList.remove('show'),5500);
+}
+setTimeout(()=>showBubble(msgs[0]),3300);
+docChar.addEventListener('click',()=>{mi=(mi+1)%msgs.length;showBubble(msgs[mi]);});
+const sObs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){
+  const m={services:msgs[1],doctors:msgs[2],contact:msgs[3]}[el.target.id];
+  if(m)showBubble(m);
+}})},{threshold:.3});
+['services','doctors','contact'].forEach(id=>{const el=document.getElementById(id);if(el)sObs.observe(el);});
+</script>
+</body>
+</html>
